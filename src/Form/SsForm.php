@@ -11,7 +11,7 @@ use Drupal\Core\File\Exception\FileException;
  * Implements a custom form.
  */
 class SsForm extends FormBase {
-
+    
   /**
    * {@inheritdoc}
    */
@@ -24,6 +24,9 @@ class SsForm extends FormBase {
    */
   public function buildForm(array $form, FormStateInterface $form_state) {
 
+    global $user;
+    $check = array_intersect(array('moderator', 'administrator'), array_values($user->roles));
+
     // File Upload Validator
     $validators = [
       'file_validate_is_image' => [],
@@ -31,37 +34,43 @@ class SsForm extends FormBase {
       'file_validate_size' => [Environment::getUploadMaxSize()],
     ];
 
-    $form = [
-      '#attributes' => ['enctype' => 'multipart/form-data'],
-    ];
+    if (empty($check) ? FALSE : TRUE) {
+        
 
-    $form['siteName'] = array(
-      '#type' => 'textfield',
-      '#title' => $this->t('Site Name'),
-      '#required' => TRUE,
-      '#default_value' => \Drupal::configFactory()->getEditable('system.site')->get('name'),
-      '#description' => $this->t("Please enter your site name"),
-      '#weight' => 0,
-    );
+        $form = [
+        '#attributes' => ['enctype' => 'multipart/form-data'],
+        ];
 
-    $form['logo']['settings']['logo_upload'] = array(
-      '#type' => 'file',
-      '#title' => $this->t('Upload logo image'),
-      '#maxlength' => 40,
-      '#description' => $this->t("Please upload your site logo"),
-      '#upload_validators' => $validators,
-      '#upload_location' => 'public://files',
-      '#weight' => 1,
-    );
+        $form['siteName'] = array(
+        '#type' => 'textfield',
+        '#title' => $this->t('Site Name'),
+        '#required' => TRUE,
+        '#default_value' => \Drupal::configFactory()->getEditable('system.site')->get('name'),
+        '#description' => $this->t("Please enter your site name"),
+        '#weight' => 0,
+        );
 
-    $form['submit'] = array(
-      '#type' => 'submit',
-      '#value' => $this->t('submit'),
-      '#button_type' => 'primary',
-      '#weight' => 2,
-    );
+        $form['logo']['settings']['logo_upload'] = array(
+        '#type' => 'file',
+        '#title' => $this->t('Upload logo image'),
+        '#maxlength' => 40,
+        '#description' => $this->t("Please upload your site logo"),
+        '#upload_validators' => $validators,
+        '#upload_location' => 'public://files',
+        '#weight' => 1,
+        );
 
-    return $form;
+        $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => $this->t('submit'),
+        '#button_type' => 'primary',
+        '#weight' => 2,
+        );
+
+        return $form;
+    } else {
+        $this->messenger()->addMessage($this->t('You are not an authorized person'));
+    }
   }
 
   /**
