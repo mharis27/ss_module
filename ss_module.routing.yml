@@ -1,0 +1,7 @@
+ss_module.form:
+  path: "/custom-site-settings"
+  defaults:
+    _title: "Custom Site Settings"
+    _form: '\Drupal\ss_module\Form\SsForm'
+  requirements:
+    _permission: "access content"
