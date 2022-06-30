@@ -118,14 +118,14 @@ class SsForm extends FormBase {
     $this->messenger()->addMessage($this->t('Site Name Updated'));
 
     // Setting up the uploaded image as Logo
-    $file_system = \Drupal::service('file_system');
-    $default_scheme = \Drupal::config('system.file')->get('default_scheme');
+    $fileSystem = \Drupal::service('file_system');
+    $defaultScheme = \Drupal::config('system.file')->get('default_scheme');
     $themeName = \Drupal::theme()->getActiveTheme()->getName();
     $varName = 'theme_' . $themeName . '_settings';
 
     try {
       if (!empty($form_state->getValue('logo_upload'))) {
-        $filename = $file_system->copy($form_state->getValue('logo_upload')->getFileUri(), $default_scheme . '://');
+        $filename = $fileSystem->copy($form_state->getValue('logo_upload')->getFileUri(), $defaultScheme . '://');
         \Drupal::configFactory()->getEditable('system.site')
           ->set($varName["logo_path"], set_include_path($filename))
           ->save();
