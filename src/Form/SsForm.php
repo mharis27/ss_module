@@ -38,33 +38,33 @@ class SsForm extends FormBase {
       if(in_array("administrator", $currentUserRole)){
 
         $form = [
-        '#attributes' => ['enctype' => 'multipart/form-data'],
+          '#attributes' => ['enctype' => 'multipart/form-data'],
         ];
 
         $form['siteName'] = array(
-        '#type' => 'textfield',
-        '#title' => $this->t('Site Name'),
-        '#required' => TRUE,
-        '#default_value' => \Drupal::configFactory()->getEditable('system.site')->get('name'),
-        '#description' => $this->t("Please enter your site name"),
-        '#weight' => 0,
+          '#type' => 'textfield',
+          '#title' => $this->t('Site Name'),
+          '#required' => TRUE,
+          '#default_value' => \Drupal::configFactory()->getEditable('system.site')->get('name'),
+          '#description' => $this->t("Please enter your site name"),
+          '#weight' => 0,
         );
 
         $form['logo']['settings']['logo_upload'] = array(
-        '#type' => 'file',
-        '#title' => $this->t('Upload logo image'),
-        '#maxlength' => 40,
-        '#description' => $this->t("Please upload your site logo"),
-        '#upload_validators' => $validators,
-        '#upload_location' => 'public://files',
-        '#weight' => 1,
+          '#type' => 'file',
+          '#title' => $this->t('Upload logo image'),
+          '#maxlength' => 40,
+          '#description' => $this->t("Please upload your site logo"),
+          '#upload_validators' => $validators,
+          '#upload_location' => 'public://files',
+          '#weight' => 1,
         );
 
         $form['submit'] = array(
-        '#type' => 'submit',
-        '#value' => $this->t('submit'),
-        '#button_type' => 'primary',
-        '#weight' => 2,
+          '#type' => 'submit',
+          '#value' => $this->t('submit'),
+          '#button_type' => 'primary',
+          '#weight' => 2,
         );
 
         return $form;
